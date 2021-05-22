@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 
-//required middlewares
-require("./startup/db")();
+//home route
+app.get("/", (req,res)=>{
+    res.status(200).json("app started successfully");
+});
 
-//listen to server
-const port = process.env.PORT || 3000;
-const server = app.listen(port, () => console.log(`App runnin on PORT ${port}....`));
-module.exports = server;
+//export app
+module.exports = app;

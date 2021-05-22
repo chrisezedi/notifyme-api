@@ -1,0 +1,1 @@
+[![Build Status](https://travis-ci.com/ekene-ezedi/notifyme-api.svg?token=76wQeqA4XYhVG5xpvHQU&branch=main)](https://travis-ci.com/ekene-ezedi/notifyme-api)

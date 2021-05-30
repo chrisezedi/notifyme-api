@@ -1,7 +1,23 @@
 language: node_js
+
 node_js:
-  - 'stable'
+  - '14'
+
+services:
+  - docker
+
+before_script:
+  - npm install
+  - chmod +x ./scripts/docker.sh
+
 cache:
   directories:
     - "node_modules"
+
 script: npm test
+
+after_success:
+  - ./scripts/docker.sh
+
+notifications:
+  email:  false

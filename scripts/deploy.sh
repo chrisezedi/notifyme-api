@@ -14,7 +14,7 @@ docker tag notifyme-api $DOCKER_USER/notifyme-api:latest
 docker push $DOCKER_USER/notifyme-api:latest
 
 #login to docker
-docker login --username=_ --password-stdin=${HEROKU_AUTH_TOKEN} registry.heroku.com
+docker login --username=_ --password=${HEROKU_AUTH_TOKEN} registry.heroku.com
 
 #tag docker image for heroku
 docker tag notifyme-api registry.heroku.com/notifyme-api/web

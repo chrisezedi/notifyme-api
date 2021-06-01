@@ -16,9 +16,6 @@ docker push $DOCKER_USER/notifyme-api:latest
 #login to docker
 docker login --username=_ --password-stdin=${HEROKU_AUTH_TOKEN} registry.heroku.com
 
-docker tag react-pack registry.heroku.com/fierce-eyrie-08414/web
-docker push registry.heroku.com/fierce-eyrie-08414/web
-
 #tag docker image for heroku
 docker tag notifyme-api registry.heroku.com/notifyme-api/web
 

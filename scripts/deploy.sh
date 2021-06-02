@@ -12,6 +12,9 @@ docker tag notifyme-api $DOCKER_USER/notifyme-api:latest
 #push docker image to dockerhub
 docker push $DOCKER_USER/notifyme-api:latest
 
+#login to heroku
+heroku container:login
+
 #tag docker image for heroku
 docker tag notifyme-api registry.heroku.com/notifyme-api/web
 

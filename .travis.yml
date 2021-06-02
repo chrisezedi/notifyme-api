@@ -8,6 +8,7 @@ services:
 
 before_script:
   - npm install
+  - chmod +x ./scripts/deploy.sh
 
 cache:
   directories:
@@ -16,7 +17,7 @@ cache:
 script: npm test
 
 after_success:
-  - chmod +x ./scripts/deploy.sh
+  - ./scripts/deploy.sh
 
 notifications:
   email:  false

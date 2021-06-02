@@ -12,9 +12,6 @@ docker tag notifyme-api $DOCKER_USER/notifyme-api:latest
 #push docker image to dockerhub
 docker push $DOCKER_USER/notifyme-api:latest
 
-#login to docker
-echo "$DOCKER_PASSWORD" | docker login --username=_ --password-stdin
-
 #tag docker image for heroku
 docker tag notifyme-api registry.heroku.com/notifyme-api/web
 

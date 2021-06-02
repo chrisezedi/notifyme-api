@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+echo $HEROKU_AUTH_TOKEN
 #build docker image
 docker build -t notifyme-api .
 
@@ -14,7 +14,7 @@ docker tag notifyme-api $DOCKER_USER/notifyme-api:latest
 docker push $DOCKER_USER/notifyme-api:latest
 
 #login to docker
-echo "${HEROKU_AUTH_TOKEN}" | docker login --username=_ --password-stdin
+echo $HEROKU_AUTH_TOKEN | docker login --username=_ --password-stdin
 
 #tag docker image for heroku
 docker tag notifyme-api registry.heroku.com/notifyme-api/web
@@ -23,4 +23,4 @@ docker tag notifyme-api registry.heroku.com/notifyme-api/web
 docker push registry.heroku.com/notifyme-api/web
 
 #release new container
-heroku container:release notifyme-api
+heroku container:release web -a notifyme-api

@@ -17,7 +17,7 @@ cache:
 script: npm test
 
 after_success:
-  - ./scripts/deploy.sh
+  - ./scripts/deploy.sh $HEROKU_AUTH_TOKEN
 
 notifications:
   email:  false

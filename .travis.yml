@@ -16,7 +16,7 @@ cache:
 script: npm test
 
 after_success:
-  - chmod u+x ./scripts/deploy.sh
+  - chmod +x ./scripts/deploy.sh
 
 notifications:
   email:  false

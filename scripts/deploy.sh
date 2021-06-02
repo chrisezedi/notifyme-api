@@ -23,4 +23,4 @@ docker tag notifyme-api registry.heroku.com/notifyme-api/web
 docker push registry.heroku.com/notifyme-api/web
 
 #release new container
-heroku container:release web
+heroku container:release -a notifyme-api web 

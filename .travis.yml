@@ -22,7 +22,7 @@ deploy:
   provider: script
   script: bash ./scripts/deploy.sh $HEROKU_AUTH_TOKEN
   on:
-    branch: develop
+    branch: main
 
 notifications:
   email:  false

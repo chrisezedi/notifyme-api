@@ -21,6 +21,8 @@ after_success:
 deploy:
   provider: script
   script: bash ./scripts/deploy.sh $HEROKU_AUTH_TOKEN
+  on:
+    branch: develop
 
 notifications:
   email:  false

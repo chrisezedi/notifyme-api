@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 module.exports = function(){
   let options = {
     useNewUrlParser: true,
-    useUnifiedTopology: false,
+    useUnifiedTopology: true,
     useCreateIndex: true,
     useFindAndModify: false,
     dbName:'notifyme'

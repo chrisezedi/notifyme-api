@@ -5,13 +5,15 @@
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "modulePathIgnorePatterns":["setup"]
   },
   "version": "1.0.0",
   "description": "Backend API for notifyme",
   "main": "app.js",
   "scripts": {
-    "Devtest": "jest --watchAll --detectOpenHandles",
+    "start":"nodemon server.js",
+    "devTest": "jest --watchAll --verbose --runInBand --detectOpenHandles",
     "test": "jest --ci --coverage && codecov"
   },
   "author": "Ekene Chris Okonji-Ezedi",
@@ -25,6 +27,7 @@
     "cors": "^2.8.5",
     "datauri": "^3.0.0",
     "dotenv": "^8.2.0",
+    "email-templates": "^8.0.7",
     "express": "^4.17.1",
     "googleapis": "^58.0.0",
     "helmet": "^3.21.2",

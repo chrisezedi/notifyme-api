@@ -1,4 +1,4 @@
 {
-    "db": "mongodb://127.0.0.1/notifymeapp"
+    "db": "mongodb://localhost"
 }
   

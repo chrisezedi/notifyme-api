@@ -12,7 +12,7 @@
   "description": "Backend API for notifyme",
   "main": "app.js",
   "scripts": {
-    "start":"nodemon server.js",
+    "start":"node server.js",
     "devTest": "jest --watchAll --verbose --runInBand --detectOpenHandles",
     "test": "jest --ci --coverage && codecov"
   },

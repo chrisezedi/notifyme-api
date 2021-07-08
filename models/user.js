@@ -151,7 +151,6 @@ const transporter = nodemailer.createTransport({
         resolve({success:true})
       })
       .catch((error)=>{
-        console.log(error)
         reject({success:false,error})
       });
   })

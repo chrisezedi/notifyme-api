@@ -2,6 +2,7 @@
   "name": "notifyme-api",
   "jest": {
     "testEnvironment": "node",
+    "testTimeout":30000,
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "/node_modules/"
@@ -12,7 +13,7 @@
   "description": "Backend API for notifyme",
   "main": "app.js",
   "scripts": {
-    "start":"node server.js",
+    "start":"nodemon server",
     "devTest": "jest --watchAll --verbose --runInBand --detectOpenHandles",
     "test": "jest --ci --coverage && codecov"
   },

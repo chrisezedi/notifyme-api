@@ -17,7 +17,6 @@ describe('/api/users', ()=>{
 
     //retrieve server connection before each test
     beforeEach(()=>{
-        jest.setTimeout(10000);
         server = require('../../../server')
     });
 
@@ -33,7 +32,7 @@ describe('/api/users', ()=>{
     describe('POST /', ()=>{
         test('Should return status 400, if validation fails', async()=>{
             const response = await request(server).post('/api/users').send({});
-            expect(response.status).toBe(400);
+            expect(response.status).toBe(400);        
             expect(response).toHaveProperty('error');
         });
 

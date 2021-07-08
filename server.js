@@ -20,13 +20,5 @@ if(app.get('env') == 'development'){
     app.use(cors(corsOption));
 }
 
-//connect to db
-require("./startup/db")();
-
-//routes
-require("./startup/routes")(app);
-
 //listen to server
-const server = app.listen(PORT, () => console.log(`App runnin on PORT ${PORT}....`));
-
-module.exports = server;
+app.listen(PORT, () => console.log(`App runnin on PORT ${PORT}....`));

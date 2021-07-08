@@ -2,7 +2,7 @@ const request = require('supertest');
 const User = require('../../../models/user');
 const testHelper = require("../../setup/db");
 
-let server;
+let app;
 let data = {
     firstname:"John",
     lastname:"doe",
@@ -15,15 +15,14 @@ describe('/api/users', ()=>{
     //connect to test database before all tests
     beforeAll(async()=> await testHelper.connectToTestDb());
 
-    //retrieve server connection before each test
+    //retrieve app connection before each test
     beforeEach(()=>{
-        server = require('../../../server')
+        app = require('../../../app');
     });
 
-    //clear database after each test and close server
+    //clear database after each test and close app
     afterEach(async()=>{
         await testHelper.clearTestDb();
-        await server.close();
     });
 
     //close mongoose connection and drop database after all test
@@ -31,7 +30,7 @@ describe('/api/users', ()=>{
     
     describe('POST /', ()=>{
         test('Should return status 400, if validation fails', async()=>{
-            const response = await request(server).post('/api/users').send({});
+            const response = await request(app).post('/api/users').send({});
             expect(response.status).toBe(400);        
             expect(response).toHaveProperty('error');
         });
@@ -40,13 +39,13 @@ describe('/api/users', ()=>{
             const user = new User(data);
             await user.save();
            
-            const response = await request(server).post('/api/users').send(data);            
+            const response = await request(app).post('/api/users').send(data);            
             expect(response.status).toBe(400);
             expect(response.body).toHaveProperty("msg");
         });
 
         test('should return 200, if registration succeeds', async()=>{
-            const response = await request(server).post('/api/users').send(data);
+            const response = await request(app).post('/api/users').send(data);
             expect(response.status).toBe(200);
 
             const user = await User.find({});

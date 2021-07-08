@@ -9,11 +9,6 @@ let data = {
 };
 
 describe('USER MODEL', ()=>{
-    test('SHOULD RETURN TRUE IF VERIFICATION EMAIL SENT SUCCESSFULLY', async ()=>{
-        const response = await User.sendVerificationEmail(data);
-        expect(response).toBeTruthy(); 
-    });
-
     test('should decode valid jwt', async()=>{
         const user = new User(data);
         const { _id, email, firstname } = user;

@@ -5,10 +5,7 @@ const mongoose = require('mongoose');
 //database connection string and error handling
 module.exports = function(){
   let options = {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
+    useNewUrlParser: true
   };
 
   const db = config.get('db');

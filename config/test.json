@@ -1,4 +1,4 @@
 {
-    "db": "mongodb://localhost/notifyme_test"
+    "db": "mongodb://127.0.0.1/notifyme_test"
 }
   

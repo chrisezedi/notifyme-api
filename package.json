@@ -13,7 +13,7 @@
   "description": "Backend API for notifyme",
   "main": "app.js",
   "scripts": {
-    "start":"node server",
+    "start":"node app",
     "devTest": "jest --watchAll --verbose --runInBand --detectOpenHandles",
     "test": "jest --ci --verbose --runInBand --detectOpenHandles --coverage && codecov"
   },

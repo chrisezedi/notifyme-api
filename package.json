@@ -15,7 +15,7 @@
   "scripts": {
     "start":"node server",
     "devTest": "jest --watchAll --verbose --runInBand --detectOpenHandles",
-    "test": "jest --ci --coverage && codecov"
+    "test": "jest --ci --verbose --runInBand --detectOpenHandles --coverage && codecov"
   },
   "author": "Ekene Chris Okonji-Ezedi",
   "license": "ISC",

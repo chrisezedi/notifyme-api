@@ -84,7 +84,8 @@ module.exports.hashPassword = async function (password) {
 
 // generate verification token
 module.exports.generateToken = function (payload) {
-  const token = jwt.sign(payload, process.env.PRIVATE_ACCESS_TOKEN_SECRET, {
+  let privateKey = process.env.PRIVATE_ACCESS_TOKEN_SECRET.replace(/\\n/g, '\n')
+  const token = jwt.sign(payload, privateKey, {
     algorithm: "RS256",
     expiresIn: "24h",
   });
@@ -94,7 +95,8 @@ module.exports.generateToken = function (payload) {
 //verify token 
 module.exports.verifyToken = function (token) {
  //verify verification code
- let decodedToken = jwt.verify(token,process.env.PUBLIC_ACCESS_TOKEN_SECRET,{ algorithms: "RS256", complete: true });
+ let publicKey = process.env.PUBLIC_ACCESS_TOKEN_SECRET.replace(/\\n/g, '\n')
+ let decodedToken = jwt.verify(token,publicKey,{ algorithms: "RS256", complete: true });
  return decodedToken;
 }
 

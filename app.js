@@ -17,7 +17,7 @@ const corsOption = {
 }
 
 if(app.get('env') == 'development'){
-    app.use(cors(corsOption));
+    app.use(cors());
 }
 
 //connect to db

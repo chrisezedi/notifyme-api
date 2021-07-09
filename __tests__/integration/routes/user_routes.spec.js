@@ -46,8 +46,7 @@ describe('/api/users', ()=>{
 
         test('should return 200, if registration succeeds', async()=>{
             const response = await request(app).post('/api/users').send(data);
-            expect(response.status).toBe(500);
-            console.log(response)
+            expect(response.status).toBe(200);
 
             const user = await User.find({});
             expect(user[0]).toHaveProperty('email','johndoe@gmail.com');

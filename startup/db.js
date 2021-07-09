@@ -5,7 +5,14 @@ const mongoose = require('mongoose');
 //database connection string and error handling
 module.exports = function(){
   let options = {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    autoIndex: false,
+    poolSize: 10,
+    socketTimeoutMS: 45000,
+    family: 4
   };
 
   const db = config.get('db');

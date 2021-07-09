@@ -22,7 +22,6 @@ describe('/api/users', ()=>{
 
     //clear database after each test and close app
     afterEach(async()=>{
-        await app.close();
         await testHelper.clearTestDb();
     });
 

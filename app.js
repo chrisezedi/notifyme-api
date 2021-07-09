@@ -1,6 +1,5 @@
 const cors = require('cors');
 const express = require("express");
-const PORT = process.env.PORT || 3000;
 const app = express();
 
 //cors config
@@ -32,7 +31,4 @@ app.get("/", (req,res)=>{
     res.status(200).json("app started successfully");
 });
 
-//listen to server
-const server = app.listen(PORT, () => console.log(`App runnin on PORT ${PORT}....`));
-
-module.exports = server;
+module.exports = app;

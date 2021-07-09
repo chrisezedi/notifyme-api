@@ -1,5 +1,4 @@
 const bcrypt = require ('bcrypt');
-const jwt = require('jsonwebtoken');
 
 const User = require("../../../models/user");
 
@@ -28,7 +27,7 @@ describe('USER MODEL', ()=>{
 test('should return a valid jwt', ()=>{
     const payload = {email:testUser.email,fullname:testUser.firstname};
     const token = User.generateToken(payload);
-    const decoded = jwt.verify(token, process.env.PUBLIC_ACCESS_TOKEN_SECRET);
-    expect(decoded).toMatchObject(payload);
+    const decodedJwt = User.verifyToken(token);
+    expect(decodedJwt.payload).toMatchObject(payload);
 });
 })

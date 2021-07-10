@@ -3,10 +3,9 @@ const express = require("express");
 const app = express();
 
 //cors config
-const whitelist = ['http://localhost:4200']
+const whitelist = ['http://localhost:4200','https://notifyme-client.herokuapp.com']
 const corsOption = {
   origin: function (origin, callback) {
-      console.log(origin)
 
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
@@ -16,8 +15,8 @@ const corsOption = {
   }
 }
 
-if(app.get('env') == 'development'){
-    app.use(cors());
+if(app.get('env') != 'test'){
+    app.use(cors(corsOption));
 }
 
 //connect to db

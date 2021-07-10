@@ -2,18 +2,21 @@
   "name": "notifyme-api",
   "jest": {
     "testEnvironment": "node",
-    "testTimeout":30000,
+    "testTimeout": 30000,
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
-    "modulePathIgnorePatterns":["setup"]
+    "modulePathIgnorePatterns": [
+      "setup"
+    ]
   },
   "version": "1.0.0",
   "description": "Backend API for notifyme",
   "main": "app.js",
   "scripts": {
-    "start":"node server",
+    "start-dev": "node server",
+    "start-prod": "cross-env NODE_ENV=production node server.js",
     "devTest": "jest --watchAll --verbose --runInBand --detectOpenHandles",
     "test": "jest --ci --runInBand --coverage && codecov"
   },
@@ -42,6 +45,7 @@
   },
   "devDependencies": {
     "codecov": "^3.8.2",
+    "cross-env": "^7.0.3",
     "jest": "^25.2.3",
     "supertest": "^4.0.2"
   }

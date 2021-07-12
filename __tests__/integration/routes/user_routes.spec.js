@@ -31,7 +31,7 @@ describe('/api/users', ()=>{
     describe('POST /', ()=>{
         test('Should return status 400, if validation fails', async()=>{
             const response = await request(app).post('/api/users').send({});
-            expect(response.status).toBe(400);        
+            expect(response.status).toBe(400);   
             expect(response).toHaveProperty('error');
         });
 

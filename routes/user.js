@@ -11,7 +11,6 @@ router.post("/", async (req, res) => {
     const result = User.validateUser(req.body);
     
     if (result.error){
-      console.log(result.error)
       return res.status(400).json({ error: result.error.details[0].message });  
     }
 

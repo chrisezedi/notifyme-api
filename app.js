@@ -19,6 +19,7 @@ const corsOption = {
 }
 
 if(app.get('env') != 'test'){
+	console.log("using cors")
     app.options('*', cors(corsOption))
 }
 

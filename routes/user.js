@@ -11,12 +11,14 @@ router.post("/", async (req, res) => {
     const result = User.validateUser(req.body);
     
     if (result.error){
+      console.log(result.error)
       return res.status(400).json({ error: result.error.details[0].message });  
     }
 
     //check if user already exists
     let userExists = await User.findOne({ email: req.body.email });
     if (userExists) {
+      console.log("email is unavailable")
       return res.status(400).json({ msg: "This email address is unavailable" });
     }
 
@@ -43,7 +45,7 @@ router.post("/", async (req, res) => {
     }
     } catch (error) {
       console.log(error)
-      res.status(500).json({error:"Server error"});
+      res.status(500).json({error});
     }
   });
 

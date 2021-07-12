@@ -12,7 +12,10 @@ const corsOption = {
     } else {
       callback(new Error('Not allowed by CORS'))
     }
-  }
+  },
+  allowedHeaders: ['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With', 'Accept'],
+  methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+  optionsSuccessStatus: 200
 }
 
 if(app.get('env') != 'test'){

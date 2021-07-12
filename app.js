@@ -19,10 +19,12 @@ const corsOption = {
 }
 
 if(app.get('env') == 'test'){
+	app.use(cors())
     app.options('*', cors())
 }
 
-    app.options('*', cors(corsOption))
+app.use(cors(corsOption))
+app.options('*', cors(corsOption))
 
 //connect to db
 require("./startup/db")();

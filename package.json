@@ -15,8 +15,8 @@
   "description": "Backend API for notifyme",
   "main": "app.js",
   "scripts": {
+    "start": "cross-env NODE_ENV=production node server.js",
     "start-dev": "nodemon server",
-    "start-prod": "cross-env NODE_ENV=production node server.js",
     "devTest": "jest --watchAll --verbose --runInBand --detectOpenHandles",
     "test": "jest --ci --runInBand --coverage && codecov"
   },

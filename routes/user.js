@@ -117,32 +117,24 @@ router.put("/verify", async (req, res) => {
 //resend verification link
 router.post("/resend_verification_link", async(req,res) => {
   try {
-    const user = User.findOne({"email":req.body.email});
+    //check if email exist, if not send error else send email
+    let user = await User.findOne({email:req.body.email});
+    if (!user) return res.status(400).json({user, msg:"User does not exist!"});
+
+    //gen token
     const { _id, email, firstname } = user;
     const payload = { id:_id, email, firstname }
 
     const vToken = User.generateVerificationToken(payload);
-    //check if email exist, if not send error else send email
-    // let user = await User.findOne({email:req.body.email});
-    // if (!user) return res.status(400).json({user, msg:"User does not exist!"});
 
-    // //gen token
-    // const { _id, email, firstname } = user;
-    // const payload = { id:_id, email, firstname }
+    user.verificationcode = vToken;
 
-    // const vToken = User.generateVerificationToken(payload);
-
-    // user.verificationcode = vToken;
-
-    // const response = await User.sendVerificationEmail(user);
-    // if ((response.success)) {
-    //   res.status(200).json({ success: true, msg:"email sent" });
-    // }    
-      res.status(200).json({ success: true, vToken });
-
+    const response = await User.sendVerificationEmail(user);
+    if ((response.success)) {
+      res.status(200).json({ success: true, msg:"email sent" });
+    }    
   } catch (error){
-    console.log(error)
-    res.status(500).json({error});
+      res.status(500).json({error});
   }
 
 });

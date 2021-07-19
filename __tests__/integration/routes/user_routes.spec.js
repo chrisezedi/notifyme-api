@@ -84,7 +84,7 @@ describe('/api/users', ()=>{
             expect(user.length).toBe(1);            
         })
 
-        test('should return 200 if verification link is sent', ()=>{
+        test('should return 200 if verification link is sent', async()=>{
             const user = new User(data);
             await user.save();
             const response = await request(app).post('/api/users/resend_verification_link').send({email:user.email});

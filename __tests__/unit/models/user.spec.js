@@ -24,10 +24,25 @@ describe('USER MODEL', ()=>{
     expect(isMatch).toBeTruthy();
 });
 
-test('should return a valid jwt', ()=>{
+test('should return a valid Access token', ()=>{
     const payload = {email:testUser.email,fullname:testUser.firstname};
     const token = User.generateToken(payload);
     const decodedJwt = User.verifyToken(token);
     expect(decodedJwt.payload).toMatchObject(payload);
 });
+
+test('should return a valid verification token', ()=>{
+  const payload = {email:testUser.email,fullname:testUser.firstname};
+  const token = User.generateVerificationToken(payload);
+  const decodedJwt = User.verifyToken(token);
+  expect(decodedJwt.payload).toMatchObject(payload);
+});
+
+test('should return a valid refresh token', ()=>{
+  const payload = {email:testUser.email,fullname:testUser.firstname};
+  const token = User.generateRefreshToken(payload);
+  const decodedJwt = User.verifyToken(token);
+  expect(decodedJwt.payload).toMatchObject(payload);
+});
+
 })

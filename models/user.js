@@ -81,13 +81,33 @@ module.exports.hashPassword = async function (password) {
   const hash = await bcrypt.hash(password, salt);
   return hash;
 };
-
+    
 // generate verification token
-module.exports.generateToken = function (payload) {
+module.exports.generateVerificationToken = function (payload) {
   let privateKey = process.env.PRIVATE_ACCESS_TOKEN_SECRET.replace(/\\n/g, '\n')
   const token = jwt.sign(payload, privateKey, {
     algorithm: "RS256",
     expiresIn: "24h",
+  });
+  return token;
+};
+
+// generate Access token
+module.exports.generateToken = function (payload) {
+  let privateKey = process.env.PRIVATE_ACCESS_TOKEN_SECRET.replace(/\\n/g, '\n')
+  const token = jwt.sign(payload, privateKey, {
+    algorithm: "RS256",
+    expiresIn: "1m",
+  });
+  return token;
+};
+
+// generate Access token
+module.exports.generateRefreshToken = function (payload) {
+  let privateKey = process.env.PRIVATE_ACCESS_TOKEN_SECRET.replace(/\\n/g, '\n')
+  const token = jwt.sign(payload, privateKey, {
+    algorithm: "RS256",
+    expiresIn: "3d",
   });
   return token;
 };

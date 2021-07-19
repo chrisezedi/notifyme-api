@@ -17,7 +17,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node server.js",
     "start-dev": "nodemon server",
-    "devTest": "jest --watchAll --verbose --runInBand --detectOpenHandles",
+    "test-dev": "jest --watchAll --verbose --runInBand --detectOpenHandles",
     "test": "jest --ci --runInBand --coverage && codecov"
   },
   "author": "Ekene Chris Okonji-Ezedi",

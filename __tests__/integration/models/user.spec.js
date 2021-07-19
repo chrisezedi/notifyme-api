@@ -19,4 +19,10 @@ describe('USER MODEL', ()=>{
         expect(decodedJwt.payload).toHaveProperty('email','johndoe@gmail.com');
         expect(decodedJwt.payload).toHaveProperty('firstname','John');
     })
+
+    test('should return true if email is sent', async () => {
+        const user = new User(data);
+        const response = await User.sendVerificationEmail(user);
+        expect(response).toBeTruthy();
+    })
 })

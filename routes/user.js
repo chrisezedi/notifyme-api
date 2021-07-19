@@ -1,10 +1,44 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/user")
+const User = require("../models/user");
+
+//get access token
+router.get("/access_token", async(req,res) => {
+  try{
+    if(!req.headers.cookie){
+      return res.status(404).json({ msg:"no cookie present" })
+    }
+    const cookie = req.headers.cookie;
+    const start = cookie.indexOf("=") + 1;
+    const oldRefreshToken = cookie.substring(start,cookie.length);
+
+    const decoded = await User.verifyToken(oldRefreshToken);
+    
+    //payload
+    const { id, email, firstname } = decoded;
+    const payload = { id, email, firstname };
+
+    const token = User.generateToken(payload);
+
+    //generate refresh token
+    const refreshToken = User.generateRefreshToken(payload);
+    const cookieExpiration = new Date(Date.now() + 604800000);
+    res.cookie("refreshToken",refreshToken,{
+      secure:(process.env.NODE_ENV !== "development" || process.env.NODE_ENV !== "test"),
+      httpOnly:true,
+      expires:cookieExpiration
+    });
+    return res.status(200).json({ success: true, token });
+  } catch (error){
+    console.log(error);
+    return res.status(500).json({ success: false, error: error.message });
+
+  }
+});
 
 //register route
 router.post("/", async (req, res) => {
-  
+
   try {
 
     //validate data
@@ -17,7 +51,6 @@ router.post("/", async (req, res) => {
     //check if user already exists
     let userExists = await User.findOne({ email: req.body.email });
     if (userExists) {
-      console.log("email is unavailable")
       return res.status(400).json({ msg: "This email address is unavailable" });
     }
 
@@ -30,7 +63,7 @@ router.post("/", async (req, res) => {
     const { _id, email, firstname } = user;
     const payload = { id:_id, email, firstname }
 
-    const vToken = User.generateToken(payload);
+    const vToken = User.generateVerificationToken(payload);
 
     user.password = hash;
     user.verificationcode = vToken;
@@ -43,18 +76,16 @@ router.post("/", async (req, res) => {
       res.status(200).json({ success: true });
     }
     } catch (error) {
-      console.log(error)
       res.status(500).json({error});
     }
   });
 
 //verify user
-router.put("/:vtoken", async (req, res) => {
+router.put("/verify", async (req, res) => {
   try {
-    const token = User.verifyToken(req.params.vtoken);
-
+    let decoded = await User.verifyToken(req.body.token);
     //retrieve user id from token
-    const id = token.payload._id;
+    const id = decoded.payload.id;
 
     //find user in db, if user exists, update isVerified status
     const user = await User.findByIdAndUpdate(
@@ -63,14 +94,57 @@ router.put("/:vtoken", async (req, res) => {
       { new: true }
     );
 
-    //generate token and send with response
-    const payload = User.pickPayloadProps(user);
-    token = User.generateToken(payload);
+    //generate access token
+    const { _id, email, firstname } = user;
+    const payload = { id:_id, email, firstname };
+    const token = User.generateToken(payload);
+
+    //generate refresh token
+    const refreshToken = User.generateRefreshToken(payload);
+    const cookieExpiration = new Date(Date.now() + 604800000);
+    res.cookie("refreshToken",refreshToken,{
+      secure:(process.env.NODE_ENV !== "development" || process.env.NODE_ENV !== "test"),
+      httpOnly:true,
+      expires:cookieExpiration
+    });
 
     return res.status(200).json({ success: true, token });
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message });
   }
+});
+
+//resend verification link
+router.post("/resend_verification_link", async(req,res) => {
+  try {
+    const user = User.findOne({"email":req.body.email});
+    const { _id, email, firstname } = user;
+    const payload = { id:_id, email, firstname }
+
+    const vToken = User.generateVerificationToken(payload);
+    //check if email exist, if not send error else send email
+    // let user = await User.findOne({email:req.body.email});
+    // if (!user) return res.status(400).json({user, msg:"User does not exist!"});
+
+    // //gen token
+    // const { _id, email, firstname } = user;
+    // const payload = { id:_id, email, firstname }
+
+    // const vToken = User.generateVerificationToken(payload);
+
+    // user.verificationcode = vToken;
+
+    // const response = await User.sendVerificationEmail(user);
+    // if ((response.success)) {
+    //   res.status(200).json({ success: true, msg:"email sent" });
+    // }    
+      res.status(200).json({ success: true, vToken });
+
+  } catch (error){
+    console.log(error)
+    res.status(500).json({error});
+  }
+
 });
 
 //export router

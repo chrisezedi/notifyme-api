@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
 
 //get access token
 router.get("/access_token", async(req,res) => {
@@ -137,6 +138,46 @@ router.post("/resend_verification_link", async(req,res) => {
       res.status(500).json({error});
   }
 
+});
+
+//login
+router.post("/login", async (req, res) => {
+  try {
+    //retrieve email and password
+    const email = req.body.email;
+    const password = req.body.password;
+
+    //check if user exists
+    const user = await User.findOne({ email: email });
+
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    } else {
+      //verify password
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch)
+        return res.status(400).send("Password incorrect");
+
+      if (!user.isverified) {
+        console.log(user)
+        return res.status(400).json({ isverified:false });
+      }
+
+      //gen token
+      const { _id, email, firstname } = user;
+      const payload = { id:_id, email, firstname }
+
+      //generate token and send with res
+      const token = User.generateToken(payload);
+
+      return res.status(200).json({ success: true, token });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
 });
 
 //export router

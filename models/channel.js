@@ -43,17 +43,17 @@ const Channel = mongoose.model('Channel',channelSchema);
 module.exports = Channel;
 
 //validate channel input
-// module.exports.validateChannel = function (channel) {  
-//     const schema = Joi.object().keys({
-//         name: Joi.string().max(50).required(),
-//         description:Joi.string().max(400).required(),
-//         category:Joi.string().required()
-//     });
+module.exports.validateChannel = function (channel) {  
+    const schema = Joi.object().keys({
+        name: Joi.string().max(50).required(),
+        description:Joi.string().max(400).required(),
+        category:Joi.string().required()
+    });
     
-//     //.... Return result....
-//     const result = Joi.validate(channel, schema);
-//     return result;
-// }
+    //.... Return result....
+    const result = Joi.validate(channel, schema);
+    return result;
+}
 
 
 //channel categories

@@ -94,6 +94,37 @@ describe('/api/users', ()=>{
         })
     })
 
+    describe('POST /login', ()=>{
+        test('should return 404 if user does not exist',async()=>{
+            const response = await request(app).post('/api/users/login').send({email:'janendoe@gmail.com',password:'123456789'});
+            expect(response.status).toBe(404);
+        });
+
+        test('should return 400 if passsword is incorrect',async()=>{
+            const user = new User(data);
+            await user.save();
+            const response = await request(app).post('/api/users/login').send({email:'johndoe@gmail.com',password:'invalid password'});
+            expect(response.status).toBe(400);
+        });
+
+        test('should return 400 if user is not verified', async()=>{
+            const user = new User(data);
+            await user.save();
+            const res = await request(app).post('/api/users/login').send({email:'johndoe@gmail.com',password:'123456789'});
+            expect(res.status).toBe(400);
+        });
+
+        test('should return 200 if login is successful', async()=>{
+            data.isverified = true;
+            const hash = await User.hashPassword(data.password);
+            data.password = hash;
+            const user = new User(data);
+            await user.save();
+            const res = await request(app).post('/api/users/login').send({email:data.email,password:"123456789"});
+            expect(res.status).toBe(200);
+        });
+    })
+
     describe('PUT /', ()=>{
         test('should return 500, if verification fails', async()=>{
             const response = await request(app).put('/api/users/verify').send({token:"invalid token"});

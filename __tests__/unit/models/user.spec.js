@@ -24,24 +24,30 @@ describe('USER MODEL', ()=>{
     expect(isMatch).toBeTruthy();
 });
 
-test('should return a valid Access token', ()=>{
-    const payload = {email:testUser.email,fullname:testUser.firstname};
-    const token = User.generateToken(payload);
-    const decodedJwt = User.verifyToken(token);
-    expect(decodedJwt.payload).toMatchObject(payload);
+test('should return a valid Access token', async()=>{
+  const user = new User(testUser);
+  const { _id, email, firstname } = user;
+  const payload = { id:_id, email, firstname }
+  const token = User.generateToken(payload);
+  const decodedJwt = await User.verifyToken(token);
+  expect(decodedJwt.payload).toHaveProperty("email","johndoe@gmail.com");
+  expect(decodedJwt.payload).toHaveProperty("firstname","john");
 });
 
-test('should return a valid verification token', ()=>{
-  const payload = {email:testUser.email,fullname:testUser.firstname};
+test('should return a valid verification token', async()=>{
+  const user = new User(testUser);
+  const { _id, email, firstname } = user;
+  const payload = { id:_id, email, firstname }  
   const token = User.generateVerificationToken(payload);
-  const decodedJwt = User.verifyToken(token);
-  expect(decodedJwt.payload).toMatchObject(payload);
+  const decodedJwt = await User.verifyToken(token);
+  expect(decodedJwt.payload).toHaveProperty("email","johndoe@gmail.com");
+  expect(decodedJwt.payload).toHaveProperty("firstname","john");
 });
 
-test('should return a valid refresh token', ()=>{
+test('should return a valid refresh token', async()=>{
   const payload = {email:testUser.email,fullname:testUser.firstname};
   const token = User.generateRefreshToken(payload);
-  const decodedJwt = User.verifyToken(token);
+  const decodedJwt = await User.verifyToken(token);
   expect(decodedJwt.payload).toMatchObject(payload);
 });
 

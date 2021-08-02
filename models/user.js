@@ -94,18 +94,20 @@ module.exports.generateVerificationToken = function (payload) {
 
 // generate Access token
 module.exports.generateToken = function (payload) {
+  const newPayload = {...payload, type:'acc_t'};
   let privateKey = process.env.PRIVATE_ACCESS_TOKEN_SECRET.replace(/\\n/g, '\n')
-  const token = jwt.sign(payload, privateKey, {
+  const token = jwt.sign(newPayload, privateKey, {
     algorithm: "RS256",
-    expiresIn: "1m",
+    expiresIn: "5m",
   });
   return token;
 };
 
 // generate Access token
 module.exports.generateRefreshToken = function (payload) {
+  const newPayload = {...payload, type:'ref_t'};
   let privateKey = process.env.PRIVATE_ACCESS_TOKEN_SECRET.replace(/\\n/g, '\n')
-  const token = jwt.sign(payload, privateKey, {
+  const token = jwt.sign(newPayload, privateKey, {
     algorithm: "RS256",
     expiresIn: "3d",
   });
@@ -113,10 +115,10 @@ module.exports.generateRefreshToken = function (payload) {
 };
 
 //verify token 
-module.exports.verifyToken = function (token) {
+module.exports.verifyToken = async function (token) {
  //verify verification code
  let publicKey = process.env.PUBLIC_ACCESS_TOKEN_SECRET.replace(/\\n/g, '\n')
- let decodedToken = jwt.verify(token,publicKey,{ algorithms: "RS256", complete: true });
+ let decodedToken = jwt.verify(token,publicKey,{ algorithms: "RS256",complete: true});
  return decodedToken;
 }
 

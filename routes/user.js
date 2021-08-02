@@ -16,13 +16,14 @@ router.get("/access_token", async(req,res) => {
     const decoded = await User.verifyToken(oldRefreshToken);
     
     //payload
-    const { id, email, firstname } = decoded;
-    const payload = { id, email, firstname };
+    const { id, firstname } = decoded.payload;
+    const accessTokenPayload = { id, firstname }
 
-    const token = User.generateToken(payload);
+    const token = User.generateToken(accessTokenPayload);
 
     //generate refresh token
-    const refreshToken = User.generateRefreshToken(payload);
+    const refreshTokenPayload = { id, firstname }
+    const refreshToken = User.generateRefreshToken(refreshTokenPayload);
     const cookieExpiration = new Date(Date.now() + 604800000);
     res.cookie("refreshToken",refreshToken,{
       secure:(process.env.NODE_ENV !== "development" || process.env.NODE_ENV !== "test"),
@@ -31,7 +32,6 @@ router.get("/access_token", async(req,res) => {
     });
     return res.status(200).json({ success: true, token });
   } catch (error){
-    console.log(error);
     return res.status(500).json({ success: false, error: error.message });
 
   }
@@ -96,12 +96,13 @@ router.put("/verify", async (req, res) => {
     );
 
     //generate access token
-    const { _id, email, firstname } = user;
-    const payload = { id:_id, email, firstname };
-    const token = User.generateToken(payload);
+    const { _id, firstname } = user;
+    const accessTokenPayload = { id:_id, firstname }
+    const token = User.generateToken(accessTokenPayload);
 
     //generate refresh token
-    const refreshToken = User.generateRefreshToken(payload);
+    const refreshTokenPayload = { id:_id, firstname }
+    const refreshToken = User.generateRefreshToken(refreshTokenPayload);
     const cookieExpiration = new Date(Date.now() + 604800000);
     res.cookie("refreshToken",refreshToken,{
       secure:(process.env.NODE_ENV !== "development" || process.env.NODE_ENV !== "test"),
@@ -161,22 +162,38 @@ router.post("/login", async (req, res) => {
         return res.status(400).send("Password incorrect");
 
       if (!user.isverified) {
-        console.log(user)
         return res.status(400).json({ isverified:false });
       }
 
       //gen token
-      const { _id, email, firstname } = user;
-      const payload = { id:_id, email, firstname }
-
+      const { _id, firstname } = user;
+      const accessTokenPayload = { id:_id, firstname }
       //generate token and send with res
-      const token = User.generateToken(payload);
+      const token = User.generateToken(accessTokenPayload);
+
+       //generate refresh token
+      const refreshTokenPayload = { id:_id, firstname }
+      const refreshToken = User.generateRefreshToken(refreshTokenPayload);
+      const cookieExpiration = new Date(Date.now() + 604800000);
+      res.cookie("refreshToken",refreshToken,{
+        secure:(process.env.NODE_ENV !== "development" || process.env.NODE_ENV !== "test"),
+        httpOnly:true,
+        expires:cookieExpiration
+      });
 
       return res.status(200).json({ success: true, token });
     }
   } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).send("something went wrong!");
+  }
+});
+
+router.post("/logout", async (req,res)=>{
+  try{
+    res.clearCookie('refreshToken');
+    return res.status(200).json({ success: true });
+  }catch(error){
+    return res.status(500).send("something went wrong!");
   }
 });
 

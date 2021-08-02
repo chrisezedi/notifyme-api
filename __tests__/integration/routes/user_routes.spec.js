@@ -1,6 +1,7 @@
 const request = require('supertest');
 const User = require('../../../models/user');
 const testHelper = require("../../setup/db");
+const sinon = require("sinon");
 
 let app;
 let data = {
@@ -120,8 +121,8 @@ describe('/api/users', ()=>{
             data.password = hash;
             const user = new User(data);
             await user.save();
-            const res = await request(app).post('/api/users/login').send({email:data.email,password:"123456789"});
-            expect(res.status).toBe(200);
+            const response = await request(app).post('/api/users/login').send({email:data.email,password:'123456789'});
+            expect(response.status).toBe(200);
         });
     })
 
@@ -151,5 +152,27 @@ describe('/api/users', ()=>{
             expect(response.headers).toHaveProperty("set-cookie");
 
         })
+    })
+
+    describe('PUT /resend_verification_link', ()=>{
+        test('should return 400, if user does not exist', async()=>{
+            const response = await request(app).post('/api/users/resend_verification_link').send({email:data.email});
+            expect(response.status).toBe(400);
+        });
+
+        test('should return 200, if verification mail is resent', async()=>{
+            const user = new User(data);
+            await user.save();
+            const response = await request(app).post('/api/users/resend_verification_link').send({email:data.email});
+            expect(response.status).toBe(200);
+        });
+
+        test('should return 500 if server error occurs', async()=>{
+            sinon.stub(User,'sendVerificationEmail').throws(Error("Server error"));
+            const user = new User(data);
+            await user.save();
+            const response = await request(app).post('/api/users/resend_verification_link').send({email:data.email});
+            expect(response.status).toBe(500);
+        });
     })
 })

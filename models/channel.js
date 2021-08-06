@@ -21,7 +21,8 @@ const channelSchema = new Schema({
     },
     createdat:{
         type:Date,
-        required:true
+        required:true,
+        default:Date.now()
     },
     subscribers:[],
     subscriptions:[],

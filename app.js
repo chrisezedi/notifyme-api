@@ -1,6 +1,7 @@
 const cors = require('cors');
 const express = require("express");
 const app = express();
+const cloudinaryConfig = require("./middlewares/cloudinary-config").cloudinaryConfig;
 
 //cors config
 const allowlist = ['http://localhost:4200','https://notifyme-client.herokuapp.com']
@@ -19,7 +20,7 @@ if(app.get('env') == 'test'){
 }
 
 app.use(cors(corsOptionsDelegate))
-
+app.use("*", cloudinaryConfig);
 //connect to db
 require("./startup/db")();
 
